@@ -1,7 +1,7 @@
 package com.example.bean;
 
 /**
- * 
+ * asdf
  * @author nickvujasin
  *
  */
