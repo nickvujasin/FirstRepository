@@ -23,5 +23,7 @@ public class Application {
 
 		String msg = obj.getMessage();
 		System.out.println(msg);
+		
+		((ClassPathXmlApplicationContext) context).close();
 	}
 }
