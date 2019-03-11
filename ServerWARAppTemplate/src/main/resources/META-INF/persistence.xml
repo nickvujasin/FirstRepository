@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    		 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    							 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    		 version="2.0">
+    <!-- The persistence.xml file is a standard configuration file in JPA. It has to be included in 
+    	 the META-INF directory inside the JAR file that contains the entity beans. The persistence.xml 
+    	 file must define a persistence-unit with a unique name in the current scoped classloader. -->
+    <persistence-unit name="IntegrationTestJPA" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <class>com.rest.domain.Customer</class>
+        
+        <!-- The properties element in the persistence.xml can contain any configuration properties 
+        	 for the underlying persistence provider. Since Hibernate is specified above as the persistence provider, 
+        	 you can pass in any Hibernate options here. -->
+        <properties>
+            <!-- Configuring hibernate properties -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.generate_statistics" value="true"/>
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <!-- Configuring hibernate cache properties -->
+            <property name="hibernate.cache.use_query_cache" value="true" /> <!-- Because I use queries to retrieve the data. -->
+            <property name="hibernate.javax.cache.missing_cache_strategy" value="create" />
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+    		<property name="hibernate.cache.region.factory_class" value="jcache"/>
+    		<property name="hibernate.javax.cache.provider" value="org.ehcache.jsr107.EhcacheCachingProvider" />
+    		<property name="hibernate.javax.cache.uri" value="cache/ehcache.xml"/>
+        </properties>
+    </persistence-unit>
+</persistence>

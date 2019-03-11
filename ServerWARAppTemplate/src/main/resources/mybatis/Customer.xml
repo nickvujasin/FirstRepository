@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+The true power of MyBatis is in the Mapped Statements. This is where the magic happens. For all of their power, 
+the Mapper XML files are relatively simple. Certainly if you were to compare them to the equivalent JDBC code, 
+you would immediately see a savings of 95% of the code. MyBatis was built to focus on the SQL, and does its 
+best to stay out of your way. 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Customer">
+
+	<resultMap id="customerMap" type="com.rest.domain.Customer">
+		<constructor>
+			<arg column="first_name" javaType="String" jdbcType="VARCHAR"/>
+			<arg column="last_name" javaType="String" jdbcType="VARCHAR"/>
+			<arg column="email" javaType="String" jdbcType="VARCHAR"/>
+		</constructor>
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<select id="get" parameterType="int" resultMap="customerMap">
+		SELECT * FROM customers WHERE id = #{id}
+	</select>
+	
+	<select id="getAll" resultMap="customerMap">
+		SELECT * FROM customers
+	</select>
+	
+	<insert id="add" parameterType="com.rest.domain.Customer" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO customers
+		(first_name, last_name, email)
+		VALUES
+		(#{firstName}, #{lastName}, #{email})
+   </insert>
+   
+   <update id="update" parameterType="com.rest.domain.Customer">
+        UPDATE customers
+        SET
+        first_name = #{firstName},
+        last_name = #{lastName},
+        email = #{email}
+        WHERE
+        id = #{id}
+    </update>
+    
+	<delete id="remove" parameterType="int">
+    	DELETE FROM customers WHERE id = #{id}
+    </delete>
+
+</mapper>

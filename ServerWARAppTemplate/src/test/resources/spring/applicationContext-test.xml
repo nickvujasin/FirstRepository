@@ -1,0 +1,90 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation=
+    "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+	<context:property-placeholder location="classpath:application-test.properties" />
+
+	<!-- Import the original configuration into this file on top. Then override bean definitions 
+		 which you may want (e.g. use in-memory database instead of regular database). -->
+	<import resource="classpath:spring/applicationContext.xml"/>
+
+	<!-- Define the JPA EntityManagerFactory that is defined in the persistence.xml. -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+  		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence-test.xml" />
+  		<property name="persistenceUnitName" value="UnitTestJPA" />
+  		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- Define the Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="packagesToScan" value="com.rest.domain"/>
+		<property name="hibernateProperties">
+			<props>
+				<!-- Configuring hibernate properties -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- Configuring hibernate cache properties -->
+                <prop key="hibernate.cache.use_query_cache">true</prop> <!-- Because I use queries to retrieve the data. -->
+            	<prop key="hibernate.javax.cache.missing_cache_strategy">create</prop>
+            	<prop key="hibernate.cache.use_second_level_cache">true</prop>
+    			<prop key="hibernate.cache.region.factory_class">jcache</prop>
+    			<prop key="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</prop>
+    			<prop key="hibernate.javax.cache.uri">cache/ehcache-test.xml</prop>
+            </props>
+    	</property>
+	</bean>
+	
+	<!-- Define the H2 Pooled DataSource. -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    	<property name="driverClass" value="${db.driver}"/>
+    	<property name="jdbcUrl" value="${db.url}"/>
+    	<property name="user" value="${db.user}"/>
+    	<property name="password" value="${db.pass}"/>
+    	<property name="minPoolSize" value="10"/> <!-- Minimum size of pool -->
+    	<property name="maxPoolSize" value="20"/> <!-- Maximum size of pool -->
+    	<property name="acquireIncrement" value="1"/> <!-- Number of connections acquired at a time when pool is exhausted -->
+    	<property name="maxIdleTime" value="500"/> <!-- Connection idle time -->
+    	<property name="maxStatements" value="50"/> <!-- PreparedStatement cache size -->
+    	<property name="idleConnectionTestPeriod" value="2000" /> <!-- Idle time before a c3p0 pooled connection is validated -->
+	</bean>
+	
+	<!-- This Spring configuration example will cause liquibase to run automatically when the 
+		 Spring context is initialized. It will load liquibase-master-changelog.xml from the 
+		 classpath and apply it against dataSource. This builds the tables in H2. -->
+	<bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+    	<property name="dataSource" ref="dataSource"/>
+    	<property name="changeLog" value="classpath:db/liquibase-master-changelog.xml"/>
+    	<property name="contexts" value="test"/>
+	</bean>
+   
+   	<!-- The JCache Manager -->
+	<bean name="cacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
+    	<property name="cacheManagerUri" value="classpath:cache/ehcache-test.xml"/>
+   	</bean>
+   	
+   	<!-- JMS connection factory that points to an embedded JMS Artemis instance. 
+   		 The events queue and jms producer do not change from what is defined in applicationContext.xml. -->
+   	<bean id="connectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory">
+   		<constructor-arg value="vm://0"/>
+	</bean>
+	
+	<!-- This test class uses the JmsProducer to send a message and also implements the javax.jms.MessageListener 
+		 interface to listen to the message. Its playing the duel role of producer and consumer for test purposes. -->
+	<bean id="jmsConsumer" class="com.rest.jms.producer.JmsProducerTest" />
+	
+	<!-- Notice that the messageListener is configured with the jmsConsumer defined above. -->
+	<bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref="connectionFactory"/>
+    	<property name="destination" ref="eventsQueue"/>
+    	<property name="messageListener" ref="jmsConsumer"/> 
+	</bean>
+	
+</beans>

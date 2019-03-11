@@ -1,0 +1,11 @@
+# Maven
+target/
+Users/
+# Eclipse
+.settings/
+.project
+.classpath
+# Mac OS
+.DS_Store
+# Generated API Docs
+api-docs/

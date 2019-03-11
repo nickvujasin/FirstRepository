@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xsi:schemaLocation=
+    "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.1.xsd">
+    
+    <context:property-placeholder location="classpath:application.properties" />
+    
+    <!-- Scan the package code to find the Dependency Injection endpoints. -->
+    <context:component-scan base-package="com.rest" />
+    
+    <!-- These Services that are going to be injected into the Resources. -->
+    <bean id="customerService" class="com.rest.service.impl.CustomerServiceImpl"/>
+    
+    <!-- These DAOs that are going to be injected into the Services. -->
+    <!-- Comment in the version you want to run. --> 
+    <!-- See the pom.xml file, maven-surefire-plugin, to comment out the same version. --> 
+    <!-- <bean id="customerDAO" class="com.rest.dao.impl.jpa.CustomerDAOImpl"/> --> <!-- JPA -->
+    <bean id="customerDAO" class="com.rest.dao.impl.jdbc.CustomerDAOImpl"/> <!-- JDBC -->
+    <!-- <bean id="customerDAO" class="com.rest.dao.impl.mybatis.CustomerDAOImpl"/> --> <!-- MyBatis -->
+    <!-- <bean id="customerDAO" class="com.rest.dao.impl.hibernate.CustomerDAOImpl"/> --> <!-- Hibernate -->
+    
+	<!-- Define the JPA EntityManagerFactory that is defined in the persistence.xml. -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+  		<property name="persistenceUnitName" value="IntegrationTestJPA" />
+  		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- Define the Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="packagesToScan" value="com.rest.domain"/>
+		<property name="hibernateProperties">
+			<props>
+				<!-- Configuring hibernate properties -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- Configuring hibernate cache properties -->
+                <prop key="hibernate.cache.use_query_cache">true</prop> <!-- Because I use queries to retrieve the data. -->
+            	<prop key="hibernate.javax.cache.missing_cache_strategy">create</prop>
+            	<prop key="hibernate.cache.use_second_level_cache">true</prop>
+    			<prop key="hibernate.cache.region.factory_class">jcache</prop>
+    			<prop key="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</prop>
+    			<prop key="hibernate.javax.cache.uri">cache/ehcache.xml</prop>
+            </props>
+    	</property>
+	</bean>
+	
+	<!-- Define the MyBatis SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:mybatis/MyBatisConfig.xml"/>
+	</bean>
+	
+	<!-- Define the MySQL Pooled DataSource. -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    	<property name="driverClass" value="${db.driver}"/>
+    	<property name="jdbcUrl" value="${db.url}"/>
+    	<property name="user" value="${db.user}"/>
+    	<property name="password" value="${db.pass}"/>
+    	<property name="minPoolSize" value="10"/> <!-- Minimum size of pool -->
+    	<property name="maxPoolSize" value="20"/> <!-- Maximum size of pool -->
+    	<property name="acquireIncrement" value="1"/> <!-- Number of connections acquired at a time when pool is exhausted -->
+    	<property name="maxIdleTime" value="500"/> <!-- Connection idle time -->
+    	<property name="maxStatements" value="50"/> <!-- PreparedStatement cache size -->
+    	<property name="idleConnectionTestPeriod" value="2000" /> <!-- Idle time before a c3p0 pooled connection is validated -->
+	</bean>
+	
+	<!-- The JCache Manager -->
+	<bean name="cacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
+    	<property name="cacheManagerUri" value="classpath:cache/ehcache.xml"/>
+   	</bean>
+	
+	<!-- Customer Cache -->
+	<bean name="customerCache" class="com.rest.dao.cache.JCacheWrapper">
+  		<constructor-arg value="com.rest.domain.Customer"/>
+  		<constructor-arg ref="cacheManager"/>
+	</bean>
+	
+	<!-- Enable @AspectJ annotation support -->
+    <aop:aspectj-autoproxy />
+    
+	<!-- Aspects -->
+	<bean id="eventAspect" class="com.rest.aspect.EventAspect"/>
+	
+	<!-- JMS -->
+   	<bean id="connectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory">
+   		<constructor-arg value="tcp://localhost:61616?type=CF"/>
+	</bean>
+
+	<bean id="eventsQueue" class="org.apache.activemq.artemis.jms.client.ActiveMQQueue">
+    	<!-- events is a queue defined on artemis in <your broker>/etc/broker.xml in production. 
+    		 events is a queue that is created on the fly in the embedded artemis in test. -->
+    	<constructor-arg index="0" value="events"/>
+	</bean>
+
+	<bean id="jmsProducer" class="com.rest.jms.producer.JmsProducer"/>
+
+	<bean id="jmsConsumer" class="com.rest.jms.consumer.JmsConsumer"/>
+
+	<bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    	<property name="connectionFactory" ref="connectionFactory"/>
+    	<property name="destination" ref="eventsQueue"/>
+    	<property name="messageListener" ref="jmsConsumer"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,653 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>war</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Server WAR App Template Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<!-- JAX-RS 2.1 Implementation -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>2.27</version>
+		</dependency>
+		<!-- Servlet 3.x Implementation -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>2.27</version>
+		</dependency>
+		<!-- Jetty Servlet Container. -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-jetty-servlet</artifactId>
+			<version>2.27</version>
+		</dependency>
+		<!-- Provides JAX-RS JSON support for Jersey. -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>2.27</version>
+		</dependency>
+		<!-- Provides JAX-RS XML support for Jersey. -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-jaxb</artifactId>
+			<version>2.27</version>
+		</dependency>
+		<!-- Convert Java objects to XML and vice-versa. -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.12</version>
+		</dependency>
+		<!-- Spring - Jersey extension module providing support for Spring 4 integration. -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring4</artifactId>
+			<version>2.27</version>
+			<!-- Exclude all the Spring versions in this module with newer versions 
+				specified below. -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<!-- Work around bug where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
+					which is compiled for JDK9. -->
+				<exclusion>
+					<groupId>org.glassfish.hk2.external</groupId>
+					<artifactId>asm-all-repackaged</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Work around bug where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
+			which is compiled for JDK9. -->
+		<dependency>
+			<groupId>org.glassfish.hk2.external</groupId>
+			<artifactId>asm-all-repackaged</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<!-- Contains modules that form the foundation of the Spring Framework. -->
+		<!-- DI (Dependency Injection) and the DI Container. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Spring support for cacheing -->
+		<dependency>
+    		<groupId>org.springframework</groupId>
+    		<artifactId>spring-context-support</artifactId>
+    		<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Provides core HTTP integration, including some handy Servlet filters, 
+			Spring HTTP Invoker, infrastructure to integrate with other web frameworks 
+			and HTTP technologies e.g. Hessian, Burlap. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Spring embedded DB integration. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Provides the ability to integrate JPA with Spring. -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Provides JMS integration -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+		<!-- Artemis JMS Client and Server -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>artemis-jms-client</artifactId>
+			<version>2.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>artemis-jms-server</artifactId>
+			<version>2.6.4</version>
+		</dependency>
+		<!-- HTTP Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.2.11.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.2.11.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-aspects</artifactId>
+			<version>4.2.11.RELEASE</version>
+		</dependency>
+		<!-- HTTP Client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.7</version>
+		</dependency>
+		<!-- The AspectJ weaver introduces advices to java classes. -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<!-- The runtime needed to execute a program using AspectJ. -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<!-- JSR 380 Bean Validation API. -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- JSR 380 Bean Validation Provider. -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.14.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b11</version>
+		</dependency>
+		<!-- JSR 338 Java Persistence API. -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<!-- JSR 338 JPA Provider. -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.4.1.Final</version>
+		</dependency>
+		<!-- JSR 107 JCache Provider. -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jcache</artifactId>
+			<version>5.4.1.Final</version>
+		</dependency>
+		<!-- Cache -->
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>3.5.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- DB Connection Pooling. -->
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.3</version>
+		</dependency>
+		<!-- MySql Java Database Driver. -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.protobuf</groupId>
+					<artifactId>protobuf-java</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- MyBatis ORM -->
+		<dependency>
+    		<groupId>org.mybatis</groupId>
+    		<artifactId>mybatis</artifactId>
+    		<version>3.5.0</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.mybatis</groupId>
+    		<artifactId>mybatis-spring</artifactId>
+    		<version>2.0.0</version>
+		</dependency>
+		<!-- Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.7.22</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.3.22.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Clean inserts the embedded H2 DB and MySql DB into a known state between 
+			test methods. -->
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.6.0</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- DB Source Control. Creates the tables in the embedded H2 DB and MySql 
+			DB during unit and integration testing. -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>3.6.3</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Embedded H2 DB for testing. -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.197</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Embedded JMS MOM for unit testing. -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>artemis-junit</artifactId>
+			<version>2.6.4</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+		<!-- Bridge between 1.2 and 2.x - will handle third party libraries depending 
+			on older log4j version. -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+		<!-- Generate enunciate documentation site and client artifacts. -->
+		<dependency>
+			<groupId>com.webcohesion.enunciate</groupId>
+			<artifactId>enunciate-core-annotations</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.webcohesion.enunciate</groupId>
+			<artifactId>enunciate-rt-util</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>ServerWARAppTemplate</finalName>
+		<plugins>
+			<!-- Integration Testing. -->
+			<!-- IMPORTANT! Order of the plugins matter. -->
+			<!-- The plugins will execute in the order they are listed in the pom 
+				within the phase they are declared in. -->
+			<!-- Manage our DB changes during integration testing. -->
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.6.3</version>
+				<configuration>
+					<changeLogFile>src/test/resources/db/liquibase-master-changelog.xml</changeLogFile>
+					<driver>${db.driver}</driver>
+					<url>${db.url}</url>
+					<username>${db.user}</username>
+					<password>${db.pass}</password>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>8.0.15</version>
+						<exclusions>
+							<exclusion>
+								<groupId>com.google.protobuf</groupId>
+								<artifactId>protobuf-java</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>update</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>dbunit-maven-plugin</artifactId>
+				<version>1.0-beta-3</version>
+				<dependencies>
+					<!-- DB Unit does not support the MySql Connector 8.x.x -->
+					<!-- IMPORTANT! It is imperative to ONLY DEFINE this driver -->
+					<!-- HERE otherwise there will be 2 MySql connectors in the classpath. -->
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.47</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<driver>com.mysql.jdbc.Driver</driver>
+					<url>${db.url}?useSSL=false</url>
+					<username>${db.user}</username>
+					<password>${db.pass}</password>
+					<!-- Since we are using MySql, set the data type factory to it. -->
+					<dataTypeFactoryName>org.dbunit.ext.mysql.MySqlDataTypeFactory</dataTypeFactoryName>
+					<!-- The data to import to load the DB is in a flat xml format. -->
+					<format>flat</format>
+				</configuration>
+				<executions>
+					<!-- Export the current state of the data from the DB. This will be -->
+					<!-- the original state of the DB. We want to leave it as it is -->
+					<!-- after the integration tests. -->
+					<execution>
+						<id>Export Current DB State As Original DB State</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>export</goal>
+						</goals>
+						<configuration>
+							<!-- Export the data into a flat xml format. -->
+							<format>flat</format>
+							<dest>target/dbunit/OriginalData.xml</dest>
+						</configuration>
+					</execution>
+					<!-- Do a clean insert of the integration test data. -->
+					<execution>
+						<id>Clean Insert DB Test Data</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>operation</goal>
+						</goals>
+						<configuration>
+							<type>CLEAN_INSERT</type>
+							<src>src/test/resources/db/IntegrationTestData.xml</src>
+						</configuration>
+					</execution>
+					<!-- Import the original state of the data before the integration tests -->
+					<!-- ran. We want to leave it as it is after the integration tests. -->
+					<execution>
+						<id>Import Original DB State</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>operation</goal>
+						</goals>
+						<configuration>
+							<type>CLEAN_INSERT</type>
+							<src>target/dbunit/OriginalData.xml</src>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Compare Current DB State Against Original DB State</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>compare</goal>
+						</goals>
+						<configuration>
+							<src>target/dbunit/OriginalData.xml</src>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Compare Current DB State Of Table Against Original DB State</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>compare</goal>
+						</goals>
+						<configuration>
+							<src>target/dbunit/OriginalData.xml</src>
+							<tables>
+								<table>
+									<name>customers</name>
+								</table>
+							</tables>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Compare Current DB State With Query Against Original DB State</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>compare</goal>
+						</goals>
+						<configuration>
+							<src>target/dbunit/OriginalData.xml</src>
+							<queries>
+								<query>
+									<name>customers</name>
+									<sql>select * from customers</sql>
+								</query>
+							</queries>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- The Jetty server starts up in the pre-integration-test phase and shuts down in the post-integration-test phase.
+				After the package phase of the build, the generated war will be deployed into jetty.
+				https://www.eclipse.org/jetty/documentation/9.4.x/jetty-maven-plugin.html#running-assembled-webapp-as-war -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.14.v20181114</version>
+				<configuration>
+					<httpConnector>
+						<port>8080</port>
+					</httpConnector>
+					<stopKey>quit</stopKey>
+					<stopPort>9000</stopPort>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.webcohesion.enunciate</groupId>
+				<artifactId>enunciate-maven-plugin</artifactId>
+				<version>2.11.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<configuration>
+							<!-- The enunciate configuration file. -->
+							<configFile>src/main/resources/enunciate/enunciate.xml</configFile>
+							<!-- The generated api docs will be placed in this directory at the 
+								root of the project. -->
+							<docsDir>api-docs</docsDir>
+							<!-- The generated source/class domain artifacts are generated under 
+								target/enunciate -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+    			<groupId>org.codehaus.mojo</groupId>
+    			<artifactId>properties-maven-plugin</artifactId>
+    			<version>1.0.0</version>
+    			<executions>
+      				<execution>
+        				<phase>initialize</phase>
+        				<goals>
+          					<goal>read-project-properties</goal>
+        				</goals>
+        				<configuration>
+          					<files>
+            					<file>src/main/resources/application.properties</file>
+          					</files>
+       					</configuration>
+      				</execution>
+    			</executions>
+  			</plugin>
+			<!-- The surefire plugin executes unit tests during the test phase. It 
+				is already configured when the pom was generated (see Effective POM tab) 
+				so you don't have to configure it here unless you want to add something to 
+				it like the configuration to skip tests below. The surefire plugin includes 
+				all classes whose name starts with Test, or ends with Test, Tests or TestCase. 
+				https://maven.apache.org/surefire/maven-surefire-plugin/ -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<configuration>
+				<excludes>
+					<!-- Comment out the <exclude> of the version you want to run. -->
+					<!-- See the applicationContext.xml file to comment in the same version. --> 
+            		<exclude>com.rest.dao.impl.jpa.*Test.java</exclude> <!-- JPA -->
+            		<!-- <exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> --> <!-- JDBC -->
+            		<exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> <!-- MyBatis -->
+            		<exclude>com.rest.dao.impl.hibernate.*Test.java</exclude> <!-- Hibernate -->
+          		</excludes>
+					<!-- Skips surefire tests without skipping failsafe tests. -->
+					<skipTests>${skip.surefire.tests}</skipTests>
+				</configuration>
+			</plugin>
+			<!-- The failsafe plugin runs integration tests in the integration-test 
+				phase. This has to be configured here if you want it. The failsafe plugin 
+				executes test methods in classes whose name starts with IT, or ends with 
+				IT or ITCase. The failsafe plugin binds goals to the integration-test and 
+				verify phases. The Failsafe Plugin is used during the integration-test and 
+				verify phases of the build lifecycle to execute the integration tests of 
+				an application. The Failsafe Plugin will not fail the build during the integration-test 
+				phase, thus enabling the post-integration-test phase to execute. 
+				https://maven.apache.org/surefire/maven-failsafe-plugin/ -->
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.1</version>
+				<executions>
+					<execution>
+						<!-- The Failsafe Plugin has only two goals: -->
+						<goals>
+							<goal>integration-test</goal> <!-- Runs the integration tests of an application. -->
+							<goal>verify</goal> <!-- Verifies that the integration tests of an application passed. -->
+							<!-- By default this plugin generates summary XML file at ${basedir}/target/failsafe-reports/failsafe-summary.xml -->
+						</goals>
+						<configuration>
+							<!-- Configuration: See https://maven.apache.org/surefire/maven-failsafe-plugin/ 
+								for config options. -->
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Configuration: See https://maven.apache.org/surefire/maven-failsafe-plugin/ 
+						for config options. -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<!-- mvn verify -Pskip.tests - compiles, builds and packages a war but 
+			does not run any tests. -->
+		<profile>
+			<id>skip.tests</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<!-- mvn verify -Pskip.unit.tests - compiles, builds and packages a war 
+			and runs integration tests. -->
+		<profile>
+			<id>skip.unit.tests</id>
+			<properties>
+				<skip.surefire.tests>true</skip.surefire.tests>
+			</properties>
+		</profile>
+	</profiles>
+	<groupId>com.example</groupId>
+	<artifactId>ServerWARAppTemplate</artifactId>
+</project>

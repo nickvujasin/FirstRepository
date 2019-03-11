@@ -1,0 +1,16 @@
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://enunciate.webcohesion.com/schemas/enunciate-2.11.1.xsd">
+
+	<title>com.rest REST API</title>
+   
+	<api-classes>
+		<include pattern="com.rest.domain.*"/>
+		<include pattern="com.rest.resource.*"/>
+		<include pattern="com.rest.exception.ErrorMessage"/>
+	</api-classes>
+
+	<modules>
+		<!-- The "groupBy" attribute dictates how the resources are grouped in the generated docs. -->
+		<jaxrs groupBy="path"/>
+  	</modules>
+</enunciate>

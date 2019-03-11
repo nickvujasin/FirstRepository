@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- DB Unit does a clean insert in H2 on all the tables with the data defined here before every DAO test method. 
+	 See com.rest.dao.impl.jpa.BaseDAOTest.java -->
+<dataset>
+
+   <customers id="1" first_name="Nick" last_name="Vujasin" email="nick_vujasin@yahoo.com"/>
+   <customers id="2" first_name="Stella" last_name="Vujasin" email="stella_vujasin@yahoo.com"/>
+   
+</dataset>

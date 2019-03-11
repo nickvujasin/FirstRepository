@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
+						http://www.liquibase.org/xml/ns/dbchangelog 
+						http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  
+  	<!-- Specifying a tag to rollback to will roll back all change-sets that were executed 
+  		 against the target database after the given tag was applied. -->
+  	<changeSet id="tag-1.0" author="nvujasin">
+	    <tagDatabase tag="1.0" />
+	</changeSet> 
+	<changeSet id="1" author="nvujasin">
+		<createTable tableName="customers">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="PK_CUSTOMERS"/>
+            </column>
+            <column name="first_name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(45)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="CUSTOMERS_IDX01"/>
+            </column>
+        </createTable>
+	</changeSet>
+	<!-- MySql does not support sequences. Will probably delete. -->
+    <changeSet id="2" author="nvujasin">
+		<createSequence sequenceName="CUSTOMERS_ID_SEQ" startValue="20" incrementBy="1" maxValue="1000000000"/>
+    </changeSet>    		
+</databaseChangeLog> 
