@@ -33,19 +33,19 @@ generated documentation in a web browser click on the index.html file.
 --- Unit Testing ---
 There are unit tests (JUnit and Mockito) for the REST (Resource) and Service layers.
 
-Unit testing uses an embedded H2 database along with an embedded Artemis MOM.
+Unit testing uses an embedded H2 database along with an embedded Artemis messaging service.
 
 DBUnit is used to provide the embedded H2 database in the same state between test methods.
 
 Liquibase is used to provided database source control. It creates the tables in the embedded H2 database. 
 
-Unit testing doesn't require any standalone services like a database or a messaging server.
+Unit testing doesn't require any standalone services like a database or a messaging server since they are both embedded.
 
 To build and run the unit tests: mvn test
 
 
 --- Integration Testing ---
-Integration testing uses a Jetty HTTP Server, a standalone MySql database along with a standalone Artemis MOM.
+Integration testing uses a Jetty HTTP Server, a standalone MySql database along with a standalone Artemis messaging service.
 
 HttpClient and Jersey's JAX-RS HTTP client are used to test the REST API all the way through to the database.
 
@@ -144,7 +144,7 @@ POST http://localhost:8080/rest/customers
    "last_name": "Johnson",
    "email": "jack_johnson@yahoo.com"
 }
-You should receive a response with the new customer added and their {id} which you will use in the PUT below.
+You should receive a response with the new customer added and their {id} which you will use in the PUT and DELETE below.
 
 To update a customer call, don't forget to populate the "Content-Type" header with the format you are sending.
 Here we are updating customer with {id} that was returned to you in the POST, you need to send that customer in the body.

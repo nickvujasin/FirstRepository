@@ -74,7 +74,7 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-aop</artifactId>
 				</exclusion>
-				<!-- Work around bug where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
+				<!-- Work around where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
 					which is compiled for JDK9. -->
 				<exclusion>
 					<groupId>org.glassfish.hk2.external</groupId>
@@ -82,7 +82,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Work around bug where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
+		<!-- Work around where jersey-spring4 pulls in asm-all-repackaged:jar:2.5.0-b42, 
 			which is compiled for JDK9. -->
 		<dependency>
 			<groupId>org.glassfish.hk2.external</groupId>
@@ -202,7 +202,7 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.1.Final</version>
 			<exclusions>
-				<!-- Work around bug where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
+				<!-- Work around where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
 					which is compiled for JDK9. -->
 				<exclusion>
 					<groupId>org.glassfish.jaxb</groupId>
@@ -214,7 +214,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Work around bug where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
+		<!-- Work around where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
 			which is compiled for JDK9. -->
 		<dependency>
     		<groupId>org.glassfish.jaxb</groupId>
