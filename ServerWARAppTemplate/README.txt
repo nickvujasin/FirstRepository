@@ -96,3 +96,73 @@ applicationContext.xml
 <bean id="customerDAO" class="com.rest.dao.impl.jdbc.CustomerDAOImpl"/> <!-- JDBC -->
 <!-- <bean id="customerDAO" class="com.rest.dao.impl.mybatis.CustomerDAOImpl"/> --> <!-- MyBatis -->
 <!-- <bean id="customerDAO" class="com.rest.dao.impl.hibernate.CustomerDAOImpl"/> --> <!-- Hibernate -->
+
+
+--- Calling the API ---
+Integration testing covers calling all scenarios of the API but if you wanted to manually call the API you 
+can do that as follows but first, you will need the integration testing resources defined above installed 
+and configured on your machine for each of the scenarios defined below.
+
+- Integrate your IDE with Jetty - 
+  Once installed, configure the web app folder to this projects WAR file folder of target/ServerWARAppTemplate.
+  With Jetty integrated into your IDE, I use Eclipse, you can start Jetty by right clicking on the POM file and 
+  "Run As" "Run with Jetty". Jetty will load the generated WAR file and you will be up and running.
+- Download Jetty Runner -
+  The idea of the jetty-runner is extremely simple – run a webapp directly from the command line using a 
+  single jar file and as much default configuration as possible. 
+  java -jar jetty-runner-9.4.9.v20180320.jar ServerWARAppTemplate.war
+- Install the WAR file in a standalone web server like Apache Tomcat.   
+
+The API can be called by command line or with the use of a tool like Postman.
+
+There are 2 users, the admin user with a user name and password of "admin" and the regular user with the
+user name and password of "user". Since the API uses the basic auth the user name and password need to
+be populated in the authorization header in the request.
+
+The "admin" user has authorization to POST, PUT, DELETE and GET.
+The "user" user has authorization to only GET.
+
+The "Accept" header, the format you want the data returned to you as, should be populated with either "application/json" or "application/xml"
+The "Content-Type" header, the format you are sending, should be populated with either "application/json" or "application/xml"
+
+To retrieve all customers call, don't forget to populate the "Accept" header as well, if not the default is json.
+GET http://localhost:8080/rest/customers
+
+To retrieve a single customer call, don't forget to populate the "Accept" header as well, if not the default is json.
+GET http://localhost:8080/rest/customers/1
+
+To create a customer call, don't forget to populate the "Content-Type" header with the format you are sending.
+Here the "Content-Type" will be "application/json". The "Accept" header will be "application/json", it can be "application/xml" as well. 
+POST http://localhost:8080/rest/customers
+
+{
+   "first_name": "Jack",
+   "last_name": "Johnson",
+   "email": "jack_johnson@yahoo.com"
+}
+You should receive a response with the new customer added and their {id} which you will use in the PUT below.
+
+To update a customer call, don't forget to populate the "Content-Type" header with the format you are sending.
+Here we are updating customer with {id} that was returned to you in the POST, you need to send that customer in the body.
+PUT http://localhost:8080/rest/customers/{id}
+
+{
+    "id": {id},
+    "first_name": "Jacky",
+    "last_name": "John",
+    "email": "jacky_john@yahoo.com"
+}
+
+To delete a customer call
+Here we are deleting the customer with {id} that you added and updated above.
+DELETE http://localhost:8080/rest/customers/{id}
+
+
+--- Validation ---
+If the first name, last name or the email address is missing on a POST or PUT, a validation exception occurs which you should see.
+The email address is unique. If the email address already exists for a customer then a validation exception occurs which you should see. 
+
+
+  
+  
+  

@@ -201,6 +201,30 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.1.Final</version>
+			<exclusions>
+				<!-- Work around bug where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
+					which is compiled for JDK9. -->
+				<exclusion>
+					<groupId>org.glassfish.jaxb</groupId>
+					<artifactId>jaxb-runtime</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.bytebuddy</groupId>
+					<artifactId>byte-buddy</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Work around bug where hibernate-core pulls in jaxb-runtime-2.3.1.jar and byte-buddy-1.9.5.jar, 
+			which is compiled for JDK9. -->
+		<dependency>
+    		<groupId>org.glassfish.jaxb</groupId>
+    		<artifactId>jaxb-runtime</artifactId>
+    		<version>2.2.11</version>
+		</dependency>
+		<dependency>
+    		<groupId>net.bytebuddy</groupId>
+    		<artifactId>byte-buddy</artifactId>
+    		<version>1.8.17</version>
 		</dependency>
 		<!-- JSR 107 JCache Provider. -->
 		<dependency>
