@@ -60,7 +60,7 @@ Liquibase is used to provided database source control. It creates the tables in 
 3. Integration testing was done using Artemis 2.6.4. Download and install it. Edit the <your broker>/etc/broker.xml
    file add the following to the <addresses> section of the file:
    <address name="events">
-   	  <anycast>
+      <anycast>
          <queue name="events"/>
       </anycast>
    </address>
@@ -76,18 +76,18 @@ DAO implementation is run you need to update 2 places:
 
 pom.xml
 <plugin>
-	<artifactId>maven-surefire-plugin</artifactId>
-	<version>2.22.1</version>
-	<configuration>
-		<excludes>
-			<!-- Comment out the <exclude> of the version you want to run. --> 
-        	<exclude>com.rest.dao.impl.jpa.*Test.java</exclude> <!-- JPA -->
-            <!-- <exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> --> <!-- JDBC -->
-            <exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> <!-- MyBatis -->
-            <exclude>com.rest.dao.impl.hibernate.*Test.java</exclude> <!-- Hibernate -->
-		</excludes>
-		...
-	</configuration>
+   <artifactId>maven-surefire-plugin</artifactId>
+   <version>2.22.1</version>
+   <configuration>
+      <excludes>
+         <!-- Comment out the <exclude> of the version you want to run. --> 
+         <exclude>com.rest.dao.impl.jpa.*Test.java</exclude> <!-- JPA -->
+         <!-- <exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> --> <!-- JDBC -->
+         <exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> <!-- MyBatis -->
+         <exclude>com.rest.dao.impl.hibernate.*Test.java</exclude> <!-- Hibernate -->
+      </excludes>
+      ...
+   </configuration>
 </plugin>
 
 applicationContext.xml
