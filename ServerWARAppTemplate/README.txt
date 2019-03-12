@@ -39,6 +39,10 @@ DBUnit is used to provide the embedded H2 database in the same state between tes
 
 Liquibase is used to provided database source control. It creates the tables in the embedded H2 database. 
 
+Unit testing doesn't require any standalone services like a database or a messaging server.
+
+To build and run the unit tests: mvn test
+
 
 --- Integration Testing ---
 Integration testing uses a Jetty HTTP Server, a standalone MySql database along with a standalone Artemis MOM.
