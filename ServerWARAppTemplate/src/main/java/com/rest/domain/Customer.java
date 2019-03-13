@@ -1,5 +1,7 @@
 package com.rest.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,31 +56,52 @@ public class Customer extends BaseDomain {
 	// Required for @Entity Persistence and for JAXB marshalling and unmarshalling.
 	Customer() {}
 	
+	/**
+	 * Constructor in which all fields are required.
+	 * @param firstName
+	 * @param lastName
+	 * @param email must be unique.
+	 */
 	public Customer(String firstName, String lastName, String email ) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+		setFirstName(firstName);
+		setLastName(lastName);
+		setEmail(email);
 	}
 	
 	public String getFirstName() {
 		return firstName;
 	}
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = Objects.requireNonNull(firstName, "First name is required.");
 	}
 	
 	public String getLastName() {
 		return lastName;
 	}
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = Objects.requireNonNull(lastName, "Last name is required.");
 	}
 	
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = Objects.requireNonNull(email, "Email is required.").toLowerCase();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof Customer))
+			return false;
+		Customer customer = (Customer) o;
+		return customer.getEmail().equals(email);
+	}
+	
+	@Override
+	public int hashCode() {
+		return email.hashCode();
 	}
 	
 	@Override

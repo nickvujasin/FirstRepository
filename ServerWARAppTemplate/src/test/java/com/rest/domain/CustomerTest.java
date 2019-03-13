@@ -1,6 +1,8 @@
 package com.rest.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -35,91 +37,89 @@ public class CustomerTest {
         validator = factory.getValidator();
     }
 
-    @Test
-    public void firstNameIsNull() {
-        Customer customer = new Customer(null, "Vujasin", "nick_vujasin@yahoo.com");
-        
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
-
-        assertEquals(1, constraintViolations.size());
-        assertEquals("First Name must be populated", constraintViolations.iterator().next().getMessage());
+    @Test(expected = NullPointerException.class)
+    public void testFirstNameIsNull() {
+        new Customer(null, "Vujasin", "nick_vujasin@yahoo.com");
     }
 
     @Test
-    public void firstNameIsEmpty() {
+    public void testFirstNameIsEmpty() {
         Customer customer = new Customer("", "Vujasin", "nick_vujasin@yahoo.com");
         
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
 
         assertEquals(1, constraintViolations.size());
         assertEquals("First Name must be populated", constraintViolations.iterator().next().getMessage());
     }
     
-    @Test
-    public void lastNameIsNull() {
-        Customer customer = new Customer("Nick", null, "nick_vujasin@yahoo.com");
-        
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
-
-        assertEquals(1, constraintViolations.size());
-        assertEquals("Last Name must be populated", constraintViolations.iterator().next().getMessage());
+    @Test(expected = NullPointerException.class)
+    public void testLastNameIsNull() {
+        new Customer("Nick", null, "nick_vujasin@yahoo.com");
     }
 
     @Test
-    public void lastNameIsEmpty() {
+    public void testLastNameIsEmpty() {
         Customer customer = new Customer("Nick", "", "nick_vujasin@yahoo.com");
         
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
 
         assertEquals(1, constraintViolations.size());
         assertEquals("Last Name must be populated", constraintViolations.iterator().next().getMessage());
     }
     
-    @Test
-    public void emailIsNull() {
-        Customer customer = new Customer("Nick", "Vujasin", null);
-        
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
-
-        assertEquals(1, constraintViolations.size());
-        assertEquals("Email must be populated", constraintViolations.iterator().next().getMessage());
+    @Test(expected = NullPointerException.class)
+    public void testEmailIsNull() {
+        new Customer("Nick", "Vujasin", null);
     }
 
     @Test
-    public void emailIsEmpty() {
+    public void testEmailIsEmpty() {
         Customer customer = new Customer("Nick", "Vujasin", "");
         
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
 
         assertEquals(1, constraintViolations.size());
         assertEquals("Email must be populated", constraintViolations.iterator().next().getMessage());
     }
     
     @Test
-    public void emailIsFormattedIncorrectly() {
+    public void testEmailIsFormattedIncorrectly() {
         Customer customer = new Customer("Nick", "Vujasin", "nick_vujasin.yahoo.com");
         
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate(customer);
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
 
         assertEquals(1, constraintViolations.size());
         assertEquals("Email must be valid", constraintViolations.iterator().next().getMessage());
     }
     
     @Test
-    public void customerIsValid() {
+    public void testCustomerIsValid() {
         Customer customer = new Customer("Nick", " Vujasin", "nick_vujasin@yahoo.com");
 
-        Set<ConstraintViolation<Customer>> constraintViolations =
-                validator.validate( customer );
+        Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(customer);
 
-        assertEquals( 0, constraintViolations.size() );
+        assertEquals(0, constraintViolations.size());
+    }
+    
+    @Test
+    public void testEquals() {
+        Customer customer = new Customer("Nick", "Vujasin", "nick_vujasin@yahoo.com");
+        
+        Customer customer2 = new Customer("Luka", "Vujasin", "Nick_Vujasin@yahoo.com");
+        
+        assertTrue(customer.equals(customer)); // same object
+        assertFalse(customer.equals(null)); // null instanceof Customer
+        assertFalse(customer.equals(new String())); // String instanceof Customer
+        assertTrue(customer.equals(customer2)); // email address
+    }
+    
+    @Test
+    public void testHashCode() {
+        Customer customer = new Customer("Nick", "Vujasin", "nick_vujasin@yahoo.com");
+        
+        Customer customer2 = new Customer("Luka", "Vujasin", "Nick_Vujasin@yahoo.com");
+        
+        assertTrue(customer.hashCode() == customer2.hashCode());
     }
     
     @Test
