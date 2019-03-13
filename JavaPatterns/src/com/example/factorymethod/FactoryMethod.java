@@ -37,6 +37,9 @@ class FactoryMethod {
 	// The superclass simply wants to work with a product and calls its methods.
 	private abstract class Creator {
 		public void workWithProduct() {
+			// If you use new, you'll be holding a reference to a concrete class. Use
+			// a factory to get around that. Product is an abstraction, not a concrete
+			// class.
 			Product product = createProduct();
 			product.doWork();
 			product.doMoreWork();
