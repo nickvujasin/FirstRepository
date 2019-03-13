@@ -5,7 +5,7 @@ package com.example.facade;
  * pattern you can take a complex subsystem and make it easier to use by
  * implementing a Facade class that provides one, more reasonable interface.
  */
-public class Facade {
+class Facade {
 
 	private class SubSystemClassA {
 		private void methodA() {System.out.println("Calling methodA on SubSystemClassA");}
