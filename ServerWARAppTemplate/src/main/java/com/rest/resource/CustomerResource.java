@@ -31,26 +31,6 @@ import com.rest.service.CustomerService;
 import com.rest.service.validation.ValidationException;
 import com.webcohesion.enunciate.metadata.rs.TypeHint;
 
-/*
- * With respect to scan-auto-detection and dependency injection for
- * BeanDefinition all these
- * annotations @Component, @Service, @Repository, @Controller are the same. We
- * can use one in place of another and can still get our way around.
- * 
- * In spring autowiring, @Autowired annotation handles only wiring part. We
- * still have to define the beans so the container is aware of them and can
- * inject them for you. With these annotations in place and automatic component
- * scanning enabled, Spring will automatically import the beans into the
- * container and inject to dependencies. These annotations are called Stereotype
- * annotations as well.
- * 
- * Annotation Meaning
- * 
- * @Component generic stereotype for any Spring-managed component
- * @Repository stereotype for persistence layer
- * @Service stereotype for service layer
- * @Controller stereotype for presentation layer (Spring-MVC)
- */
 /**
  * REST layer for customers.
  */
@@ -224,36 +204,4 @@ public class CustomerResource {
 			throw new InternalServerErrorException(message, request.getHeader("accept"));
 		}
 	}
-	
-	/**
-	 * Create Many Customers. Accepting and returning a List<Customer> only works
-	 * for JSON. This does not work for XML, XML needs a wrapper object. The json
-	 * looks proper, an array of customer.
-	 * 
-	 * [{"id":1,"first_name":"Nick","last_name":"Vujasin","email":"nick_vujasin@yahoo.com"},{"id":2,"first_name":"Stella","last_name":"Vujasin","email":"stella_vujasin@yahoo.com"}]
-	 */
-//	@POST
-//	@Path("/createmany")
-//	@Consumes({ "application/json" })
-//	@Produces({ "application/json" })
-//	@TypeHint(List.class)
-//	public Response createCustomers(List<Customer> customers, @Context HttpServletRequest request)
-//			throws BadRequestException, InternalServerErrorException {
-//	}
-
-	/**
-	 * Create Many Customers. Accepting and returning a Customers wrapper object
-	 * works for XML and JSON. JSON can also a wrapper object but it looks ugly. The
-	 * array of customer is wrapped by an object.
-	 * 
-	 * {"customers":[{"id":1,"first_name":"Nick","last_name":"Vujasin","email":"nick_vujasin@yahoo.com"},{"id":2,"first_name":"Stella","last_name":"Vujasin","email":"stella_vujasin@yahoo.com"}]}
-	 */
-//	@POST
-//	@Path("/createmany")
-//	@Consumes({"application/xml", "application/json"})
-//	@Produces({"application/xml", "application/json"})
-//	@TypeHint(List.class)
-//	public Response createCustomers(Customers customers, @Context HttpServletRequest request) 
-//			throws BadRequestException, InternalServerErrorException {}
-
 }
