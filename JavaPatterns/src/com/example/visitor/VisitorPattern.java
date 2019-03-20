@@ -5,13 +5,12 @@ import java.util.List;
 
 /**
  * The pattern should be used when you have distinct and unrelated operations to perform across a structure of objects. 
- * This avoids adding in code throughout your object structure that is better kept seperate, so it encourages cleaner code. 
+ * This avoids adding in code throughout your object structure that is better kept separate, so it encourages cleaner code. 
  * You may want to run operations against a set of objects with different interfaces.  Visitors are also valuable if you 
  * have to perform a number of unrelated operations across the classes.
  *
  * In summary, if you want to decouple some logical code from the elements that you're using as input, visitor is 
  * probably the best pattern for the job. 
- * 
  */
 public class VisitorPattern {
 	
