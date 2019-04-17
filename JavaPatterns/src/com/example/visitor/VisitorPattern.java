@@ -75,7 +75,9 @@ public class VisitorPattern {
 	
 	// Depth first traversal.
 	private static void traverseTree(Node node, Visitor visitor) {
+		// Visit the node.
 		node.accept(visitor);
+		
 		if (node.getLeftNode() != null)
 			traverseTree(node.getLeftNode(), visitor);
 		if (node.getRightNode() != null)
