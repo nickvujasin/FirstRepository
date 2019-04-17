@@ -30,7 +30,7 @@
 		 we cover below. -->
 	<!-- <global-method-security pre-post-annotations="enabled"/> -->
 	
-	<!-- 2. Here we are using Resource authorization with pointcuts. 
+	<!-- 3. Here we are using Resource authorization with pointcuts. 
 		 First, you label the *Resource class (ie, CustomerResource) with the @Component annotation then
 		 you create pointcuts for each method in a class. Security annotations take precedence over pointcuts. 
 		 As you can see this is by far the best way secure methods, the CustomerResource class is secure. -->

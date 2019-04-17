@@ -13,6 +13,15 @@ import com.rest.dao.CustomerDAO;
 import com.rest.dao.cache.CacheWrapper;
 import com.rest.domain.Customer;
 
+/**
+ * Use MyBatis, if
+ *
+ * - you want to create your own SQL's and you are willing to maintain them.
+ * - your environment is driven by relational data model.
+ * - you have to work on existing and complex schemas.
+ *
+ * Use Hibernate, if the environment is driven by object model and needs to generate SQL automatically.
+ */
 public class CustomerDAOImpl implements CustomerDAO {
 	
 	private static final Logger LOG = LogManager.getLogger(CustomerDAOImpl.class);

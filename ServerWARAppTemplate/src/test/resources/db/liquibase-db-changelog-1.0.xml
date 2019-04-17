@@ -28,9 +28,5 @@
                 <constraints nullable="false" unique="true" uniqueConstraintName="CUSTOMERS_IDX01"/>
             </column>
         </createTable>
-	</changeSet>
-	<!-- MySql does not support sequences. Will probably delete. -->
-    <changeSet id="2" author="nvujasin">
-		<createSequence sequenceName="CUSTOMERS_ID_SEQ" startValue="20" incrementBy="1" maxValue="1000000000"/>
-    </changeSet>    		
+	</changeSet>    		
 </databaseChangeLog> 

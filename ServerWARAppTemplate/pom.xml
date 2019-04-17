@@ -437,7 +437,7 @@
 				</dependencies>
 				<configuration>
 					<driver>com.mysql.jdbc.Driver</driver>
-					<url>${db.url}?useSSL=false</url>
+					<url>${db.url}&amp;useSSL=false</url>
 					<username>${db.user}</username>
 					<password>${db.pass}</password>
 					<!-- Since we are using MySql, set the data type factory to it. -->

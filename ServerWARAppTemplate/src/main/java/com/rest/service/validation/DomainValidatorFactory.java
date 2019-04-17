@@ -41,7 +41,7 @@ public class DomainValidatorFactory {
 
 			if (errors.hasErrors()) {
 				
-				// Using relection we will find all the @XmlElement annotations. Field error name,
+				// Using reflection we will find all the @XmlElement annotations. Field error name,
 				// those that failed validation should match the instance variable names in the 
 				// class that failed validation.
 				Field[] fields = domain.getClass().getDeclaredFields();
@@ -54,7 +54,7 @@ public class DomainValidatorFactory {
 					// Field error names are the instance variable names in the class that is being validated.
 					if (error instanceof FieldError) {
 						
-						// Retrieve the field name that failed vaidation.
+						// Retrieve the field name that failed validation.
 						String errorFieldName = ((FieldError) error).getField();
 						
 						// Iterate over all the reflective fields.

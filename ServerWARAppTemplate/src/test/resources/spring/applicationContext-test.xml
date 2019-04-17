@@ -64,7 +64,7 @@
     	<property name="changeLog" value="classpath:db/liquibase-master-changelog.xml"/>
     	<property name="contexts" value="test"/>
 	</bean>
-   
+	
    	<!-- The JCache Manager -->
 	<bean name="cacheManager" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
     	<property name="cacheManagerUri" value="classpath:cache/ehcache-test.xml"/>
