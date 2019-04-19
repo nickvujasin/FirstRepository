@@ -55,7 +55,23 @@ to backup the database, configure the test data and after the tests are run set 
 Liquibase is used to provided database source control. It creates the tables in the standalone MySql database if they do not exist.
 
 
---- Integration Testing Resources ---
+--- Performance Testing ---
+Performance testing, like Integration Testing, uses a Jetty HTTP Server, a standalone MySql database along with a 
+standalone Artemis messaging service. Performance testing is run the integration testing phase after the integration tests.
+
+Performance testing is done using JMeter. JMeter creates many threads simulating user requests. 
+
+Each thread will make the following calls:
+1. GET all customers.
+2. POST new customer.
+3. GET verify customer created.
+4. PUT newly created customer.
+5. GET verify customer updated.
+6. DELETE newly created customer.
+7. GET verify customer has been deleted.
+
+
+--- Integration and Performance Testing Resources ---
 1. The Jetty HTTP Server is already part of the POM file as a plugin so there is nothing to do there. 
 2. Integration testing was done using MySql 8.0.15. Download and install it then create a schema called TestDB.
    Running the integration tests (Liquibase) will automatically create the necessary tables for you. Installing the

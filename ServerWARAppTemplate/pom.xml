@@ -537,6 +537,8 @@
                 <executions>
                     <execution>
                         <id>jmeter-tests</id>
+                        <!-- Here we are running after the integration test phase. The jmeter tests
+                             should put the database back into its started state. -->
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>jmeter</goal>
