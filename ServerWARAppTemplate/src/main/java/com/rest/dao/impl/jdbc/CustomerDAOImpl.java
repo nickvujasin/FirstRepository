@@ -207,9 +207,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		for (Customer customer : customers) {
 			// Check if the customer is in the cache.
-			if (!customerCache.containsKey(customer.getId())) {
+			if (customerCache.putIfAbsent(customer.getId(), customer)) {
 				// Set the customer in the cache.
-				customerCache.put(customer.getId(), customer);
 				LOG.info("Set customer {} in the cache.", customer.getId());
 			}
 		}

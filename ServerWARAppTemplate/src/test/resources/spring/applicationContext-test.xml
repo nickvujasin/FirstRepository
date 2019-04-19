@@ -50,7 +50,7 @@
     	<property name="password" value="${db.pass}"/>
     	<property name="minPoolSize" value="10"/> <!-- Minimum size of pool -->
     	<property name="maxPoolSize" value="20"/> <!-- Maximum size of pool -->
-    	<property name="acquireIncrement" value="1"/> <!-- Number of connections acquired at a time when pool is exhausted -->
+    	<property name="acquireIncrement" value="5"/> <!-- Number of connections acquired at a time when pool is exhausted -->
     	<property name="maxIdleTime" value="500"/> <!-- Connection idle time -->
     	<property name="maxStatements" value="50"/> <!-- PreparedStatement cache size -->
     	<property name="idleConnectionTestPeriod" value="2000" /> <!-- Idle time before a c3p0 pooled connection is validated -->

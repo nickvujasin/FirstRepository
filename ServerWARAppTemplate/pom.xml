@@ -529,6 +529,46 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Run JMeter Performance Tests -->
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>2.9.0</version>
+                <executions>
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jmeter-check-results</id>
+                        <goals>
+                            <goal>results</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <testPlanLibraries>
+                        <!-- The JDBC Driver -->
+                   		<artifact>mysql:mysql-connector-java:8.0.15</artifact>
+                    </testPlanLibraries>
+                    <!-- The location of the jmeter test files -->
+               		<testFilesDirectory>src/test/resources/jmeter</testFilesDirectory>
+               		<!-- Generate the reports in target/jmeter/reports -->
+               		<generateReports>true</generateReports>
+               		<!-- The error threshold when the tests run before build fails -->
+               		<errorRateThresholdInPercent>3</errorRateThresholdInPercent>
+               		<!-- The JMeter Maven plugin will run the JMeter process in its own JVM -->
+               		<jMeterProcessJVMSettings>
+                        <!-- Initial heap size -->
+                        <xms>1024</xms>
+                        <!-- Max heap size -->
+                        <xmx>1024</xmx>
+                    </jMeterProcessJVMSettings>
+                </configuration>
+            </plugin>
 			<!-- The Jetty server starts up in the pre-integration-test phase and shuts down in the post-integration-test phase.
 				After the package phase of the build, the generated war will be deployed into jetty.
 				https://www.eclipse.org/jetty/documentation/9.4.x/jetty-maven-plugin.html#running-assembled-webapp-as-war -->

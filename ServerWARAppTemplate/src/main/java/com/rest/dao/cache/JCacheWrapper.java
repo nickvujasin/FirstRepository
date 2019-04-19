@@ -22,6 +22,10 @@ public class JCacheWrapper<K, V> implements CacheWrapper<K, V> {
 	public void put(final K key, final V value) {
 		getCache().put(key, value);
 	}
+	
+	public boolean putIfAbsent(final K key, final V value) {
+		return getCache().putIfAbsent(key, value);
+	}
 
 	public V get(final K key) {
 		Object value = getCache().get(key);

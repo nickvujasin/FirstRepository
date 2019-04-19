@@ -94,6 +94,7 @@ public class CustomerResource {
 	public Response updateCustomer(@PathParam("id") int id, Customer customer, @Context HttpServletRequest request)
 			throws BadRequestException, InternalServerErrorException {
 		try {
+			customer.setId(id);
 			customerService.updateCustomer(id, customer);
 			return Response.noContent().build(); // Returns a 204 No Content - The server processed the request successfully, but is not returning any content.
 		} catch (ValidationException e) {
