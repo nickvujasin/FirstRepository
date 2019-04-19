@@ -88,7 +88,7 @@ Each thread will make the following calls:
 
 --- Building and Running Tests ---
 5. To run just the unit tests: mvn test
-6. To run just the integration tests: mvn verify -Pskip.unit.tests
+6. To run just the integration and performance tests: mvn verify -Pskip.unit.tests
 7. To run everything: mvn verify
 
 There are 4 implementations of the DAO layer. The default is set to JDBC. In order to change which 
@@ -167,7 +167,7 @@ Here we are updating customer with {id} that was returned to you in the POST, yo
 PUT http://localhost:8080/rest/customers/{id}
 
 {
-    "id": {id},
+    "id": {id}, // optional, will be overwritten with the id in the URL
     "first_name": "Jacky",
     "last_name": "John",
     "email": "jacky_john@yahoo.com"
