@@ -62,7 +62,7 @@ public class Customer extends BaseDomain {
 	 * @param lastName
 	 * @param email must be unique.
 	 */
-	public Customer(String firstName, String lastName, String email ) {
+	public Customer(String firstName, String lastName, String email) {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);

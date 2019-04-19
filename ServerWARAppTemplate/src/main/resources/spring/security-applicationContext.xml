@@ -1,7 +1,7 @@
-<b:beans xmlns="http://www.springframework.org/schema/security"
-		 xmlns:b="http://www.springframework.org/schema/beans"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://www.springframework.org/schema/beans 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		 					 http://www.springframework.org/schema/beans/spring-beans.xsd
 							 http://www.springframework.org/schema/security 
 							 http://www.springframework.org/schema/security/spring-security.xsd">
@@ -12,16 +12,16 @@
 		 3. Method level pointcuts -->
 
 	<!-- Stateless RESTful services using BASIC authentication -->
-	<http create-session="stateless">
+	<security:http create-session="stateless">
 		<!-- 1. Here we are using URL authorization. The method attribute is optional. -->
 		<!-- <intercept-url pattern="/rest/**" method="GET" access="hasAnyRole('USER, ADMIN')"/> -->
 		<!-- <intercept-url pattern="/rest/**" method="POST" access="hasAnyRole('ADMIN')"/> -->
 		<!-- <intercept-url pattern="/rest/**" method="PUT" access="hasAnyRole('ADMIN')"/> -->
 		<!-- <intercept-url pattern="/rest/**" method="DELETE" access="hasAnyRole('ADMIN')"/> -->
-        <http-basic/>
+        <security:http-basic/>
         <!-- Disabled so we can use Postman. -->
-        <csrf disabled="true"/> 
-    </http>
+        <security:csrf disabled="true"/> 
+    </security:http>
 	
 	<!-- 2. Here we are using Resource authorization with annotations. 
 		 First, you label the *Resource class (ie, CustomerResource) with the @Component annotation then
@@ -34,21 +34,21 @@
 		 First, you label the *Resource class (ie, CustomerResource) with the @Component annotation then
 		 you create pointcuts for each method in a class. Security annotations take precedence over pointcuts. 
 		 As you can see this is by far the best way secure methods, the CustomerResource class is secure. -->
-	<global-method-security>
-		<protect-pointcut expression="execution(* com.rest.resource.*Resource.create*(..))" access="ROLE_ADMIN"/>
-		<protect-pointcut expression="execution(* com.rest.resource.*Resource.update*(..))" access="ROLE_ADMIN"/>
-        <protect-pointcut expression="execution(* com.rest.resource.*Resource.delete*(..))" access="ROLE_ADMIN"/>
-        <protect-pointcut expression="execution(* com.rest.resource.*Resource.get*(..))" access="ROLE_USER,ROLE_ADMIN"/>
-	</global-method-security>
+	<security:global-method-security>
+		<security:protect-pointcut expression="execution(* com.rest.resource.*Resource.create*(..))" access="ROLE_ADMIN"/>
+		<security:protect-pointcut expression="execution(* com.rest.resource.*Resource.update*(..))" access="ROLE_ADMIN"/>
+        <security:protect-pointcut expression="execution(* com.rest.resource.*Resource.delete*(..))" access="ROLE_ADMIN"/>
+        <security:protect-pointcut expression="execution(* com.rest.resource.*Resource.get*(..))" access="ROLE_USER,ROLE_ADMIN"/>
+	</security:global-method-security>
 	
-	<authentication-manager>
-		<authentication-provider>
-			<user-service>
-				<user name="admin" password="admin" authorities="ROLE_USER,ROLE_ADMIN"/>
-				<user name="user" password="user" authorities="ROLE_USER"/>
-			</user-service>
-		</authentication-provider>
-	</authentication-manager>
-
-</b:beans>
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="admin" password="admin" authorities="ROLE_USER,ROLE_ADMIN"/>
+				<security:user name="user" password="user" authorities="ROLE_USER"/>
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+</beans>
 

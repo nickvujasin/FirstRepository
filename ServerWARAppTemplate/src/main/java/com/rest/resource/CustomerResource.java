@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.rest.domain.Customer;
 import com.rest.domain.Customers;
@@ -35,6 +36,11 @@ import com.webcohesion.enunciate.metadata.rs.TypeHint;
  * REST layer for customers.
  */
 @Controller
+// Browsers are generally restricted when client-side web applications running from one origin request
+// data from another origin. Enabling cross-origin access is generally termed as CORS (Cross-Origin Resource Sharing).
+// With microservices, or multiple instances running behind a load balancer, as each service runs in it own origin, 
+// it will easily get into the issue of a client-side web application consuming data from multiple origins.
+@CrossOrigin
 @Path("customers")
 public class CustomerResource {
 
