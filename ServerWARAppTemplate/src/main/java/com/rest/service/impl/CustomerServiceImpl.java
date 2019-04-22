@@ -9,6 +9,7 @@ import com.rest.domain.Customer;
 import com.rest.service.CustomerService;
 import com.rest.service.validation.DomainValidatorFactory;
 import com.rest.service.validation.ValidationException;
+import com.rest.service.validation.ValidationOperation;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -20,13 +21,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer createCustomer(Customer customer) throws ValidationException {
-		validatorFactory.validateDomain(customer, "CREATE");
+		validatorFactory.validateDomain(customer, ValidationOperation.CREATE);
 		return customerDAO.createCustomer(customer);
 	}
 
 	@Override
 	public void updateCustomer(int id, Customer customer) throws ValidationException {
-		validatorFactory.validateDomain(customer, "UPDATE");
+		validatorFactory.validateDomain(customer, ValidationOperation.UPDATE);
 		customerDAO.updateCustomer(id, customer);
 	}
 

@@ -11,7 +11,7 @@ public class BadRequestException extends WebApplicationException {
 	/**
 	 * Create a HTTP 400 (Bad Request) Exception.
 	 * @param message the String that is the entity of the 400 response.
-	 * @param mediaType the requested media type to format the exception that will be returned. 
+	 * @param mediaType the requested media type by the client to format the exception in. 
 	 * Defaults to Json if <code>null</code> or if an unknown media type was passed in.
 	 * The supported media types are: <code>application/xml</code> and <code>application/json</code>
 	 */

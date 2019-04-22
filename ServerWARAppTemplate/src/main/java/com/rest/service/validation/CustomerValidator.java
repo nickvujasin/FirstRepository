@@ -40,9 +40,9 @@ public class CustomerValidator implements SmartValidator {
 		if (!ObjectUtils.isEmpty(validationHints)) {
 			
 			// As for right now the only hints being passed in is a String.
-			String operation = (String) validationHints[0];
+			ValidationOperation operation = (ValidationOperation) validationHints[0];
 
-			if (operation.equals("CREATE")) {
+			if (operation == ValidationOperation.CREATE) {
 				List<Customer> existingCustomers = customerDAO.getCustomers();
 
 				for (Customer existingCustomer : existingCustomers) {
@@ -50,7 +50,7 @@ public class CustomerValidator implements SmartValidator {
 						errors.rejectValue("email", "", "The email is already taken");
 					}
 				}
-			} else if (operation.equals("UPDATE")) {
+			} else if (operation == ValidationOperation.UPDATE) {
 				List<Customer> existingCustomers = customerDAO.getCustomers();
 
 				for (Customer existingCustomer : existingCustomers) {

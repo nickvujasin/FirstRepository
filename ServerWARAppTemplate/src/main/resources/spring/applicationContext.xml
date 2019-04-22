@@ -22,8 +22,8 @@
     <!-- Comment in the version you want to run. --> 
     <!-- See the pom.xml file, maven-surefire-plugin, to comment out the same version. --> 
     <!-- <bean id="customerDAO" class="com.rest.dao.impl.jpa.CustomerDAOImpl"/> --> <!-- JPA -->
-    <bean id="customerDAO" class="com.rest.dao.impl.jdbc.CustomerDAOImpl"/> <!-- JDBC -->
-    <!-- <bean id="customerDAO" class="com.rest.dao.impl.mybatis.CustomerDAOImpl"/> --> <!-- MyBatis -->
+    <!-- <bean id="customerDAO" class="com.rest.dao.impl.jdbc.CustomerDAOImpl"/> --> <!-- JDBC -->
+    <bean id="customerDAO" class="com.rest.dao.impl.mybatis.CustomerDAOImpl"/> <!-- MyBatis -->
     <!-- <bean id="customerDAO" class="com.rest.dao.impl.hibernate.CustomerDAOImpl"/> --> <!-- Hibernate -->
     
 	<!-- Define the JPA EntityManagerFactory that is defined in the persistence.xml. -->

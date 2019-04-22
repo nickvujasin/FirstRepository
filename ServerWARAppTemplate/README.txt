@@ -4,12 +4,12 @@ This simple one model (Customer) application packaged as a WAR has the following
 
 --- REST (Resource) Layer ---
 1. REST layer that supports XML (JaxB) and JSON (Jackson) request and responses. Jersey JAX-RS implementation.
-2. Basic Authorization using Spring security pointcuts. (Need HTTPS to complete the securing of the API)
-3. Profiling HTTP requests with Around aspects (AspectJ).
+2. Basic Authorization using Spring security pointcuts. (Need SSL to complete the securing of the API)
+3. Profiling of HTTP requests using Around aspects (AspectJ).
 4. JMS (Artemis) to asynchronously handle the results of the profiling of requests. 
 
 --- Service Layer ---
-1. Validation using both annotation (Hibernate's JSR 380 Bean Validation API implementation) and Spring's Validator framework.
+1. Validation using both annotations (Hibernate's JSR 380 Bean Validation API implementation) and Spring's Validator framework.
 
 --- Data Access Layer ---
 There are 4 implementations of the DAO layer:
@@ -22,7 +22,7 @@ Each implementation is configured with caching (EhCache).
 
 
 --- Documentation ---
-Enunciate is used to create HTML documentation of your services, scraped from your JavaDocs. It builds
+Enunciate is used to create HTML documentation of the services, scraped from the JavaDocs. It builds
 client-side libraries (Java, .NET, iOS, Ruby, JavaScript, GWT) for developers who want to use the API.
 Creates the Interface Definition Documents (e.g. WSDL, WADL, XML-Schema).
 
@@ -35,9 +35,9 @@ There are unit tests (JUnit and Mockito) for the REST (Resource) and Service lay
 
 Unit testing uses an embedded H2 database along with an embedded Artemis messaging service.
 
-DBUnit is used to provide the embedded H2 database in the same state between test methods.
+DBUnit is used to keep the embedded H2 database in the same state between test methods.
 
-Liquibase is used to provided database source control. It creates the tables in the embedded H2 database. 
+Liquibase is used to provide database source control. It creates the tables in the embedded H2 database. 
 
 Unit testing doesn't require any standalone services like a database or a messaging server since they are both embedded.
 
@@ -49,7 +49,7 @@ Integration testing uses a Jetty HTTP Server, a standalone MySql database along 
 
 HttpClient and Jersey's JAX-RS HTTP client are used to test the REST API all the way through to the database.
 
-DBUnit is used to provide the standalone MySql database in the same state between test methods. It is also used
+DBUnit is used to keep the standalone MySql database in the same state between test methods. It is also used
 to backup the database, configure the test data and after the tests are run set the database back to its pre-test state.
 
 Liquibase is used to provided database source control. It creates the tables in the standalone MySql database if they do not exist.
@@ -57,9 +57,10 @@ Liquibase is used to provided database source control. It creates the tables in 
 
 --- Performance Testing ---
 Performance testing, like Integration Testing, uses a Jetty HTTP Server, a standalone MySql database along with a 
-standalone Artemis messaging service. Performance testing is run the integration testing phase after the integration tests.
+standalone Artemis messaging service. Performance testing is run during the integration testing phase, after the 
+integration tests have run.
 
-Performance testing is done using JMeter. JMeter creates many threads simulating user requests. 
+Performance testing is done using JMeter. JMeter creates a configurable amount of load simulating user requests. 
 
 Each thread will make the following calls:
 1. GET all customers.
@@ -84,7 +85,9 @@ Each thread will make the following calls:
          <queue name="events"/>
       </anycast>
    </address>
-4. Start up the database and the messaging broker.
+4. Performance testing was done using JMeter 5.1.1. To view/edit the JMeter test simply download and install JMeter and
+   open the src/test/resources/jmeter/customers.jmx file.
+5. Start up the database and the messaging broker.
 
 --- Building and Running Tests ---
 5. To run just the unit tests: mvn test
@@ -94,7 +97,8 @@ Each thread will make the following calls:
 There are 4 implementations of the DAO layer. The default is set to JDBC. In order to change which 
 DAO implementation is run you need to update 2 places: 
 
-pom.xml
+1. pom.xml
+
 <plugin>
    <artifactId>maven-surefire-plugin</artifactId>
    <version>2.22.1</version>
@@ -110,7 +114,8 @@ pom.xml
    </configuration>
 </plugin>
 
-applicationContext.xml
+2. applicationContext.xml
+
 <!-- Comment in the version you want to run. --> 
 <!-- <bean id="customerDAO" class="com.rest.dao.impl.jpa.CustomerDAOImpl"/> --> <!-- JPA -->
 <bean id="customerDAO" class="com.rest.dao.impl.jdbc.CustomerDAOImpl"/> <!-- JDBC -->
@@ -180,6 +185,7 @@ DELETE http://localhost:8080/rest/customers/{id}
 
 --- Validation ---
 If the first name, last name or the email address is missing on a POST or PUT, a validation exception occurs which you should see.
+If the email address is not properly formed, a validation exception will occur which you should see.
 The email address is unique. If the email address already exists for a customer then a validation exception occurs which you should see. 
 
 

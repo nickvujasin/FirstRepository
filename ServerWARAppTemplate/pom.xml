@@ -298,8 +298,8 @@
 			<version>4.3.22.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- Clean inserts the embedded H2 DB and MySql DB into a known state between 
-			test methods. -->
+		<!-- Clean inserts in the embedded H2 DB and MySql DB that places 
+			the DB into a known state between test methods. -->
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
@@ -655,8 +655,8 @@
 					<!-- Comment out the <exclude> of the version you want to run. -->
 					<!-- See the applicationContext.xml file to comment in the same version. --> 
             		<exclude>com.rest.dao.impl.jpa.*Test.java</exclude> <!-- JPA -->
-            		<!-- <exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> --> <!-- JDBC -->
-            		<exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> <!-- MyBatis -->
+            		<exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> <!-- JDBC -->
+            		<!-- <exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> --> <!-- MyBatis -->
             		<exclude>com.rest.dao.impl.hibernate.*Test.java</exclude> <!-- Hibernate -->
           		</excludes>
 					<!-- Skips surefire tests without skipping failsafe tests. -->
@@ -706,7 +706,7 @@
 			</properties>
 		</profile>
 		<!-- mvn verify -Pskip.unit.tests - compiles, builds and packages a war 
-			and runs integration tests. -->
+			and runs integration and performance tests. -->
 		<profile>
 			<id>skip.unit.tests</id>
 			<properties>

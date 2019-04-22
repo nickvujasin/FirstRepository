@@ -12,7 +12,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -175,13 +174,7 @@ public class CustomerResource {
 			throw new NotFoundException(message, request.getHeader("accept"));
 		}
 
-		// return customer; 
-		// You can return a Customer object from this method but if you want to take advantage of HTTP caching
-		// of objects you need to return a Response object.
-		CacheControl cacheControl = new CacheControl();
-		cacheControl.setMaxAge(120); // 2 minutes
-		cacheControl.setPrivate(false);
-		return Response.ok(customer).cacheControl(cacheControl).build(); // Returns a 200 OK with the customer.
+		return Response.ok(customer).build(); // Returns a 200 OK with the customer.
 	}
 
 	/**

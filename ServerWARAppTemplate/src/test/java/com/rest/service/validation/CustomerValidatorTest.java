@@ -51,7 +51,7 @@ public class CustomerValidatorTest {
 		when(customerDAO.getCustomers()).thenReturn(customers);
 		
 		// Call the validator.
-		customerValidator.validate(customer, errors, "CREATE");
+		customerValidator.validate(customer, errors, ValidationOperation.CREATE);
 		
 		assertTrue(errors.getAllErrors().size() == 1);
 		assertNotNull(errors.getFieldError("email"));
@@ -78,7 +78,7 @@ public class CustomerValidatorTest {
 		when(customerDAO.getCustomers()).thenReturn(customers);
 		
 		// Call the validator.
-		customerValidator.validate(customer, errors, "UPDATE");
+		customerValidator.validate(customer, errors, ValidationOperation.UPDATE);
 		
 		assertTrue(errors.getAllErrors().size() == 1);
 		assertNotNull(errors.getFieldError("email"));
