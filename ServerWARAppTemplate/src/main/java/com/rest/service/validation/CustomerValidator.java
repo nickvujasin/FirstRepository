@@ -39,7 +39,7 @@ public class CustomerValidator implements SmartValidator {
 
 		if (!ObjectUtils.isEmpty(validationHints)) {
 			
-			// As for right now the only hints being passed in is a String.
+			// As for right now the only hints being passed in is a ValidationOperation.
 			ValidationOperation operation = (ValidationOperation) validationHints[0];
 
 			if (operation == ValidationOperation.CREATE) {

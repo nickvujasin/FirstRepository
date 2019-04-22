@@ -13,21 +13,21 @@ public class JCacheWrapper<K, V> implements CacheWrapper<K, V> {
 	private final String cacheName;
 	private final CacheManager cacheManager;
 
-	public JCacheWrapper(final String cacheName, final CacheManager cacheManager) {
+	public JCacheWrapper(String cacheName, CacheManager cacheManager) {
 		this.cacheName = cacheName;
 		this.cacheManager = cacheManager;
 		LOG.info("Creating cache {} using cache manager {}.", cacheName, cacheManager.getClass().getName());
 	}
 
-	public void put(final K key, final V value) {
+	public void put(K key, V value) {
 		getCache().put(key, value);
 	}
 	
-	public boolean putIfAbsent(final K key, final V value) {
+	public boolean putIfAbsent(K key, V value) {
 		return getCache().putIfAbsent(key, value);
 	}
 
-	public V get(final K key) {
+	public V get(K key) {
 		Object value = getCache().get(key);
 		if (value != null) {
 			return (V) value;
@@ -35,11 +35,11 @@ public class JCacheWrapper<K, V> implements CacheWrapper<K, V> {
 		return null;
 	}
 	
-	public boolean containsKey(final K key) {
+	public boolean containsKey(K key) {
 		return getCache().containsKey(key);
 	}
 	
-	public void remove(final K key) {
+	public void remove(K key) {
 		getCache().remove(key);
 	}
 

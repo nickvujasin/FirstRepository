@@ -3,7 +3,6 @@ package com.rest.aspect;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.RedirectionException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -49,30 +48,30 @@ public class EventAspect {
 		Event event = new Event(request).start();
 		
 		try {
+			// Call the REST end point and wait for the REST end point's response.
 			Object value = pjp.proceed();
 
 			if (value instanceof Response) {
+				// If there wasn't an exception then the REST call was a success.
+				// Capture the details here.
 				event.success((Response) value);
 			}
-			
+			// Continue to return the response returned by the REST end point.
 			return value;
-		}
-		catch (RedirectionException e)
-        {
-			event.seeOther(e.getLocation());
-			throw e;
-        }
-        catch (Exception e)
-        {
+			
+        } catch (Exception e) {
+        	// WebApplicationException is the super class exception of our REST exceptions. If
+        	// the REST end point threw an exception capture the details here.
         	if (e instanceof WebApplicationException) {
         		event.failure(((WebApplicationException) e).getResponse(), e);
         	} else {
         		event.failure(e);       
         	}
-        	
+        	// Continue to throw the exception thrown by the REST end point to the client.
         	throw e;
         	
         } finally {
+        	// Place the event on the queue to be processed.
         	jmsProducer.send(event);
         }
 	}

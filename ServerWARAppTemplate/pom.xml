@@ -655,8 +655,8 @@
 					<!-- Comment out the <exclude> of the version you want to run. -->
 					<!-- See the applicationContext.xml file to comment in the same version. --> 
             		<exclude>com.rest.dao.impl.jpa.*Test.java</exclude> <!-- JPA -->
-            		<exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> <!-- JDBC -->
-            		<!-- <exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> --> <!-- MyBatis -->
+            		<!-- <exclude>com.rest.dao.impl.jdbc.*Test.java</exclude> --> <!-- JDBC -->
+            		<exclude>com.rest.dao.impl.mybatis.*Test.java</exclude> <!-- MyBatis -->
             		<exclude>com.rest.dao.impl.hibernate.*Test.java</exclude> <!-- Hibernate -->
           		</excludes>
 					<!-- Skips surefire tests without skipping failsafe tests. -->

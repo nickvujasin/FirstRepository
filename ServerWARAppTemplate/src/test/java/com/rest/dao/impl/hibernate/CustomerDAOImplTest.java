@@ -83,7 +83,7 @@ public class CustomerDAOImplTest extends BaseDAOTest {
 		// using ‘soft’ locks: When a cached entity is updated, a soft lock is stored 
 		// in the cache for that entity as well, which is released after the transaction 
 		// is committed. All concurrent transactions that access soft-locked entries will 
-		// fetch the corresponding data directly from database
+		// fetch the corresponding data directly from database.
 		customerDAO.updateCustomer(1, customer);
 		
 		// The entity should exist in the cache.

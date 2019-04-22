@@ -44,9 +44,7 @@ public class JmsProducer {
 		} catch (Exception ex) {
 			LOG.error("Exception sending jms message: " + event.toString(), ex);
 		} finally {
-			
 			if (conn != null) {
-				
 				try {
 					conn.close();
 				} catch (JMSException e) {
