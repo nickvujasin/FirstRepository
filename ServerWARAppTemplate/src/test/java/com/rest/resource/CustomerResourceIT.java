@@ -1683,9 +1683,9 @@ public class CustomerResourceIT {
 			HttpResponse response = client.execute(request);
 
 			int statusCode = response.getStatusLine().getStatusCode();
-			assertThat(statusCode, equalTo(HttpStatus.SC_OK));
+			assertThat(statusCode, equalTo(HttpStatus.SC_CREATED));
 
-			if (statusCode == HttpStatus.SC_OK) {
+			if (statusCode == HttpStatus.SC_CREATED) {
 				HttpEntity entity = response.getEntity();
 				String result = entity != null ? EntityUtils.toString(entity) : null;
 				EntityUtils.consume(entity);
@@ -1729,9 +1729,9 @@ public class CustomerResourceIT {
 			HttpResponse response = client.execute(request);
 
 			int statusCode = response.getStatusLine().getStatusCode();
-			assertThat(statusCode, equalTo(HttpStatus.SC_OK));
+			assertThat(statusCode, equalTo(HttpStatus.SC_CREATED));
 
-			if (statusCode == HttpStatus.SC_OK) {
+			if (statusCode == HttpStatus.SC_CREATED) {
 				HttpEntity entity = response.getEntity();
 				String result = entity != null ? EntityUtils.toString(entity) : null;
 				EntityUtils.consume(entity);
@@ -1766,10 +1766,10 @@ public class CustomerResourceIT {
 					.post(Entity.json(customer), Response.class);
 
 			int statusCode = response.getStatus();
-			assertThat(statusCode, equalTo(Response.Status.OK.getStatusCode()));
+			assertThat(statusCode, equalTo(Response.Status.CREATED.getStatusCode()));
 
 			Customer createdCustomer = null;
-			if (statusCode == Response.Status.OK.getStatusCode()) {
+			if (statusCode == Response.Status.CREATED.getStatusCode()) {
 				createdCustomer = response.readEntity(Customer.class);
 			}
 			return createdCustomer;
@@ -1802,10 +1802,10 @@ public class CustomerResourceIT {
 					.post(Entity.xml(customer), Response.class);
 
 			int statusCode = response.getStatus();
-			assertThat(statusCode, equalTo(Response.Status.OK.getStatusCode()));
+			assertThat(statusCode, equalTo(Response.Status.CREATED.getStatusCode()));
 
 			Customer createdCustomer = null;
-			if (statusCode == Response.Status.OK.getStatusCode()) {
+			if (statusCode == Response.Status.CREATED.getStatusCode()) {
 				createdCustomer = response.readEntity(Customer.class);
 			}
 			return createdCustomer;

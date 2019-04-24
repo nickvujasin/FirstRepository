@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,7 +54,7 @@ public class CustomerResource {
 	 *
 	 * @param customer The customer to create.
 	 * @param request  The HttpServletRequest used for the run-time caller resolution.
-	 * @return <p>HTTP Status OK (200) the bean with all the fields including the id populated.</p>
+	 * @return <p>HTTP Status CREATED (201) the bean with all the fields including the id populated.</p>
 	 * @throws BadRequestException if the validation of the Customer failed.
 	 * @throws InternalServerErrorException if a server side error occurred.
 	 */
@@ -65,7 +66,7 @@ public class CustomerResource {
 			throws BadRequestException, InternalServerErrorException {
 		try {
 			customerService.createCustomer(customer);
-			return Response.ok(customer).build(); // Returns a 200 OK with the customer.
+			return Response.ok(customer).status(Status.CREATED).build(); // Returns a 201 CREATED with the customer.
 		} catch (ValidationException e) {
 			ErrorMessage message = new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),
 					e.getValidationErrors().stream().map(ve -> ve.toString()).collect(Collectors.joining(",")),

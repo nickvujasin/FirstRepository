@@ -126,7 +126,7 @@ public class CustomerResourceTest {
 		Response response = customerResource.createCustomer(customer, new MockHttpServletRequest());
 
 		assertEquals(customer.getEmail(), ((Customer) response.getEntity()).getEmail());
-		assertEquals(200, response.getStatus());
+		assertEquals(201, response.getStatus());
 
 		// Set up customer service to throw a validation exception.
 		when(customerService.createCustomer(customer)).thenThrow(new ValidationException("Validation Error Message"));
