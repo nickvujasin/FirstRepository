@@ -87,8 +87,7 @@ public class CustomerResource {
 	 *
 	 * @param id       The id of the customer to update.
 	 * @param customer The customer to update.
-	 * @param request  The HttpServletRequest used for the run-time caller
-	 *                 resolution.
+	 * @param request  The HttpServletRequest used for the run-time caller resolution.
 	 * @return <p>HTTP Status No Content (204)</p>
 	 * @throws BadRequestException if the validation of the Customer failed.
 	 * @throws InternalServerErrorException if a server side error occurred.
@@ -123,7 +122,7 @@ public class CustomerResource {
 	 *
 	 * @param id      The id of the customer to delete.
 	 * @param request The HttpServletRequest used for the run-time caller resolution.
-	 * @return<p>HTTP Status No Content (204)</p>
+	 * @return <p>HTTP Status No Content (204)</p>
 	 * @throws InternalServerErrorException if a server side error occurred.
 	 */
 	@DELETE
@@ -147,7 +146,7 @@ public class CustomerResource {
 	 *
 	 * @param id      The id of the customer to retrieve.
 	 * @param request The HttpServletRequest used for the run-time caller resolution.
-	 * @return<p>HTTP Status OK (200) the Customer.</p>
+	 * @return <p>HTTP Status OK (200) the Customer.</p>
 	 * @throws NotFoundException if the Customer was not found.
 	 * @throws InternalServerErrorException if a server side error occurred.
 	 */
